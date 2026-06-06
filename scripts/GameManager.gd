@@ -67,3 +67,9 @@ func buy_producer(id: String) -> bool:
 	pollen_changed.emit(pollen)
 	producer_purchased.emit(id, producer_counts[id])
 	return true
+
+func _process(delta: float) -> void:
+	var rate := per_sec()
+	if rate > 0.0:
+		pollen += rate * delta
+		pollen_changed.emit(pollen)

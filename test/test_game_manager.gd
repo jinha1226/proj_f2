@@ -68,3 +68,14 @@ func test_buy_producer_emits_signal():
 	gm.pollen = 100.0
 	gm.buy_producer("bee")
 	assert_signal_emitted(gm, "producer_purchased")
+
+func test_process_accumulates_production():
+	gm.pollen = 1000.0
+	gm.buy_producer("bee")  # 1/s, 비용50 → pollen 950
+	gm._process(2.0)        # 2초 경과 → +2
+	assert_almost_eq(gm.pollen, 952.0, 0.001)
+
+func test_process_no_producers_no_change():
+	gm.pollen = 10.0
+	gm._process(5.0)
+	assert_eq(gm.pollen, 10.0)
