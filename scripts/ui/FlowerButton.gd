@@ -20,5 +20,10 @@ func _update_visual() -> void:
 	for id in GameManager.flower_levels:
 		total += GameManager.flower_levels[id]
 	var size: float = 80.0 + min(total, 40) * 6.0  # 80~320px
-	_shape.custom_minimum_size = Vector2(size, size)
+	# Shape는 중앙 앵커(0.5)이므로 오프셋을 ±절반으로 줘서 중앙 유지하며 리사이즈.
+	var half: float = size * 0.5
+	_shape.offset_left = -half
+	_shape.offset_top = -half
+	_shape.offset_right = half
+	_shape.offset_bottom = half
 	_shape.color = Color(1.0, 0.6, 0.8)  # 파스텔 핑크 placeholder
