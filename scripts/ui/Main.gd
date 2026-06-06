@@ -4,6 +4,7 @@ extends Control
 @onready var _pollen_label: Label = $TopBar/PollenLabel
 @onready var _rate_label: Label = $TopBar/RateLabel
 @onready var _shop: VBoxContainer = $ShopPanel
+@onready var _offline_popup: Panel = $OfflinePopup
 
 const AUTOSAVE_INTERVAL := 10.0
 const SHOP_ROW := preload("res://scenes/components/ShopRow.tscn")
@@ -11,6 +12,13 @@ var _autosave_timer := 0.0
 var _rows: Array = []
 
 func _ready() -> void:
+	var loaded := SaveManager.load_game(GameManager)
+	if loaded:
+		var now := int(Time.get_unix_time_from_system())
+		var earned := SaveManager.offline_earnings(
+			GameManager.per_sec(), SaveManager.last_saved_at, now)
+		GameManager.pollen += earned
+		_offline_popup.show_earnings(earned)
 	GameManager.pollen_changed.connect(_on_pollen_changed)
 	_refresh()
 	_build_shop()
