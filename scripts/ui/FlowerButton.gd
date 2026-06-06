@@ -1,6 +1,8 @@
 extends TextureButton
 ## 중앙 꽃. 탭하면 GameManager.tap(). 총 꽃 레벨에 따라 크기 성장(도형 프로토타입).
 
+const FLOATING := preload("res://scenes/FloatingText.tscn")
+
 @onready var _shape: ColorRect = $Shape
 
 func _ready() -> void:
@@ -9,7 +11,11 @@ func _ready() -> void:
 	_update_visual()
 
 func _on_pressed() -> void:
+	var gained := GameManager.tap_power()
 	GameManager.tap()
+	var ft = FLOATING.instantiate()
+	get_tree().current_scene.add_child(ft)
+	ft.show_amount(gained, global_position + size * 0.5)
 
 func _on_upgrade(_id: String, _count: int) -> void:
 	_update_visual()
