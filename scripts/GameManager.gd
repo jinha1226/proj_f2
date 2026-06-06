@@ -32,3 +32,18 @@ func tap_power() -> int:
 func tap() -> void:
 	pollen += tap_power()
 	pollen_changed.emit(pollen)
+
+## 다음 1개 가격. 꽃은 base_cost와 현재 레벨로 곡선 계산.
+func upgrade_cost(id: String) -> int:
+	return GameData.cost_at(GameData.FLOWERS[id]["base_cost"], flower_levels[id])
+
+## 구매 성공 시 true. 잔액 부족이면 false(상태 불변).
+func buy_upgrade(id: String) -> bool:
+	var cost := upgrade_cost(id)
+	if pollen < cost:
+		return false
+	pollen -= cost
+	flower_levels[id] += 1
+	pollen_changed.emit(pollen)
+	upgrade_purchased.emit(id, flower_levels[id])
+	return true
