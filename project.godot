@@ -1,0 +1,24 @@
+config_version=5
+
+[application]
+config/name="Flower Clicker"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+
+[autoload]
+GameData="*res://scripts/GameData.gd"
+GameManager="*res://scripts/GameManager.gd"
+SaveManager="*res://scripts/SaveManager.gd"
+
+[display]
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/stretch/mode="canvas_items"
+window/handheld/orientation=1
+
+[editor_plugins]
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
