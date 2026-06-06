@@ -5,6 +5,8 @@ extends Control
 @onready var _rate_label: Label = $TopBar/RateLabel
 @onready var _shop: VBoxContainer = $ShopPanel
 @onready var _offline_popup: Panel = $OfflinePopup
+@onready var _garden: Node2D = $GardenField
+@onready var _producers: Node2D = $ProducerLayer
 
 const AUTOSAVE_INTERVAL := 10.0
 const SHOP_ROW := preload("res://scenes/components/ShopRow.tscn")
@@ -19,6 +21,9 @@ func _ready() -> void:
 			GameManager.per_sec(), SaveManager.last_saved_at, now)
 		GameManager.pollen += earned
 		_offline_popup.show_earnings(earned)
+	# 자식 노드는 이미 _ready를 마쳤으므로(레벨0 기준), 로드된 상태로 다시 맞춘다.
+	_garden.sync_from_state()
+	_producers.sync_from_state()
 	GameManager.pollen_changed.connect(_on_pollen_changed)
 	_refresh()
 	_build_shop()
