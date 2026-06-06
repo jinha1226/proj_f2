@@ -44,3 +44,27 @@ func test_buy_upgrade_price_rises():
 	gm.buy_upgrade("daisy")  # 10
 	gm.buy_upgrade("daisy")  # 11 (10*1.15)
 	assert_eq(gm.pollen, 1000.0 - 10 - 11)
+
+func test_buy_producer_deducts_and_counts():
+	gm.pollen = 100.0
+	var ok = gm.buy_producer("bee")  # 비용 50
+	assert_true(ok)
+	assert_eq(gm.pollen, 50.0)
+	assert_eq(gm.producer_counts["bee"], 1)
+
+func test_buy_producer_rejected_when_poor():
+	gm.pollen = 10.0
+	assert_false(gm.buy_producer("bee"))
+	assert_eq(gm.producer_counts["bee"], 0)
+
+func test_per_sec_sums_producers():
+	gm.pollen = 1000.0
+	gm.buy_producer("bee")   # +1/s
+	gm.buy_producer("bee")   # +1/s
+	assert_eq(gm.per_sec(), 2.0)
+
+func test_buy_producer_emits_signal():
+	watch_signals(gm)
+	gm.pollen = 100.0
+	gm.buy_producer("bee")
+	assert_signal_emitted(gm, "producer_purchased")

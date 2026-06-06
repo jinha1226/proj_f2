@@ -47,3 +47,23 @@ func buy_upgrade(id: String) -> bool:
 	pollen_changed.emit(pollen)
 	upgrade_purchased.emit(id, flower_levels[id])
 	return true
+
+## 초당 자동 생산량 = 보유한 모든 생산기의 per_sec*수량 합.
+func per_sec() -> float:
+	var total := 0.0
+	for id in producer_counts:
+		total += GameData.PRODUCERS[id]["per_sec"] * producer_counts[id]
+	return total
+
+func producer_cost(id: String) -> int:
+	return GameData.cost_at(GameData.PRODUCERS[id]["base_cost"], producer_counts[id])
+
+func buy_producer(id: String) -> bool:
+	var cost := producer_cost(id)
+	if pollen < cost:
+		return false
+	pollen -= cost
+	producer_counts[id] += 1
+	pollen_changed.emit(pollen)
+	producer_purchased.emit(id, producer_counts[id])
+	return true
