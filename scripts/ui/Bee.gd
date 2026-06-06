@@ -28,29 +28,12 @@ func _process(delta: float) -> void:
 	else:
 		position += to / dist * min(_speed * delta, dist)
 
+## 미니멀 픽셀: 벌 = 노란 블록 한 칸, 나비 = 보라 블록 두 칸.
+const SIZE := 8.0  # 블록 한 칸 크기(px)
+
 func _draw() -> void:
 	if kind == "butterfly":
-		_draw_butterfly()
+		draw_rect(Rect2(-SIZE, -SIZE * 0.5, SIZE, SIZE), Color(0.62, 0.42, 1.0), true)
+		draw_rect(Rect2(0, -SIZE * 0.5, SIZE, SIZE), Color(0.78, 0.6, 1.0), true)
 	else:
-		_draw_bee()
-
-func _draw_bee() -> void:
-	# 날개
-	draw_circle(Vector2(-7, -11), 11.0, Color(1, 1, 1, 0.6))
-	draw_circle(Vector2(7, -11), 11.0, Color(1, 1, 1, 0.6))
-	# 몸통
-	draw_circle(Vector2.ZERO, 15.0, Color(1, 0.82, 0.15))
-	# 줄무늬
-	draw_rect(Rect2(-13, -5, 26, 3), Color(0.15, 0.12, 0.05))
-	draw_rect(Rect2(-13, 2, 26, 3), Color(0.15, 0.12, 0.05))
-
-func _draw_butterfly() -> void:
-	var c := Color(0.6, 0.4, 1.0)
-	var c2 := Color(0.78, 0.6, 1.0)
-	# 양쪽 날개(위/아래)
-	draw_circle(Vector2(-13, -5), 13.0, c)
-	draw_circle(Vector2(-12, 11), 10.0, c2)
-	draw_circle(Vector2(13, -5), 13.0, c)
-	draw_circle(Vector2(12, 11), 10.0, c2)
-	# 몸통
-	draw_rect(Rect2(-2, -13, 4, 28), Color(0.2, 0.15, 0.3))
+		draw_rect(Rect2(-SIZE * 0.5, -SIZE * 0.5, SIZE, SIZE), Color(1, 0.85, 0.15), true)
