@@ -3,13 +3,29 @@ extends Control
 
 @onready var _pollen_label: Label = $TopBar/PollenLabel
 @onready var _rate_label: Label = $TopBar/RateLabel
+@onready var _shop: VBoxContainer = $ShopPanel
 
 const AUTOSAVE_INTERVAL := 10.0
+const SHOP_ROW := preload("res://scenes/components/ShopRow.tscn")
 var _autosave_timer := 0.0
+var _rows: Array = []
 
 func _ready() -> void:
 	GameManager.pollen_changed.connect(_on_pollen_changed)
 	_refresh()
+	_build_shop()
+
+func _build_shop() -> void:
+	for id in GameData.FLOWERS:
+		_add_row("flower", id)
+	for id in GameData.PRODUCERS:
+		_add_row("producer", id)
+
+func _add_row(kind: String, id: String) -> void:
+	var row = SHOP_ROW.instantiate()
+	_shop.add_child(row)
+	row.setup(kind, id)
+	_rows.append(row)
 
 func _on_pollen_changed(_amount: float) -> void:
 	_refresh()
@@ -17,6 +33,8 @@ func _on_pollen_changed(_amount: float) -> void:
 func _refresh() -> void:
 	_pollen_label.text = "🌸 %d" % int(GameManager.pollen)
 	_rate_label.text = "▲ %d/s" % int(GameManager.per_sec())
+	for row in _rows:
+		row.refresh()
 
 func _process(delta: float) -> void:
 	_autosave_timer += delta
