@@ -35,7 +35,7 @@ func refresh() -> void:
 		if count == 0:
 			text = "🌱 %s 심기      🌸%d" % [data["name"], cost]
 		else:
-			text = "%s 키우기 Lv%d      🌸%d" % [data["name"], count, cost]
+			text = "🌱 %s 더 심기 (%d송이)      🌸%d" % [data["name"], count, cost]
 	else:
 		text = "%s 늘리기 (보유 %d)      🌸%d" % [data["name"], count, cost]
 	disabled = GameManager.pollen < cost
