@@ -1,8 +1,8 @@
 extends Node2D
 ## 탑다운 흙 화단 + 나무 테두리. Tiny Terraces식 "액자 흙밭".
 
-const BED := Rect2(60, 240, 960, 900)  # 흙밭 영역(화면 좌표)
-const FRAME := 22.0                     # 나무틀 두께
+const BED := Rect2(10, 10, 1060, 1900)  # 흙밭 영역(화면 가득)
+const FRAME := 18.0                     # 나무틀 두께
 const STEP := 36.0                      # 흙 얼룩 격자 간격
 
 func _draw() -> void:
