@@ -5,10 +5,12 @@ extends Node2D
 const FlowerSprite := preload("res://scripts/ui/FlowerSprite.gd")
 
 const TYPES := ["daisy", "tulip", "rose"]
-const COLS := 12
-const ROWS := 18
+const COLS := 13
+const ROWS := 20
 const AREA := Rect2(150, 200, 1880, 3200)  # 심는 영역(월드 좌표)
 const CLUMP_MAX := 6                        # 성숙 시 잎이 옆과 겹쳐 흙을 덮음
+const BLK_W := 4                            # 같은 종류를 몰아 심는 구역 크기(칸)
+const BLK_H := 4
 
 var _clumps := {}  # id -> Array[FlowerSprite]  (심을 자리 순서대로)
 
@@ -23,13 +25,13 @@ func _ready() -> void:
 	var style := _style()
 	for t in TYPES:
 		_clumps[t] = []
-	# 흙밭 전체에 격자로 심을 자리 생성(종류 교대 배치 + 결정적 지터로 자연스럽게)
+	# 흙밭 전체에 격자로 심을 자리 생성. 종류를 구역(블록)별로 몰아 패치를 만든다.
 	var k := 0
 	for r in range(ROWS):
 		for c in range(COLS):
-			var t: String = TYPES[k % TYPES.size()]
-			var jx := (k * 37 % 70) - 35
-			var jy := (k * 53 % 70) - 35
+			var t: String = TYPES[((c / BLK_W) + (r / BLK_H)) % TYPES.size()]
+			var jx := (k * 37 % 36) - 18  # 지터 줄여 간격 좁힘
+			var jy := (k * 53 % 36) - 18
 			var x := AREA.position.x + (c + 0.5) * AREA.size.x / COLS + jx
 			var y := AREA.position.y + (r + 0.5) * AREA.size.y / ROWS + jy
 			var f = FlowerSprite.new()
