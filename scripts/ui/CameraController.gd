@@ -98,8 +98,10 @@ func _screen_to_world(sp: Vector2) -> Vector2:
 func _tap(screen_pos: Vector2) -> void:
 	var wp := _screen_to_world(screen_pos)
 	if PlantMode.is_active():
-		# 심기 모드: 탭한 자리에 꽃 심기(잔액 부족이면 무시)
-		GameManager.plant_flower(PlantMode.active_id, wp)
+		# 심기 모드: 타일에 스냅해 심기(범위 밖/이미 찬 타일/잔액 부족이면 무시)
+		var gf = get_parent().get_node_or_null("GardenField")
+		if gf:
+			gf.try_plant(PlantMode.active_id, wp)
 		return
 	var gained := GameManager.tap_power()
 	GameManager.tap()
