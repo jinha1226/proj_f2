@@ -10,20 +10,23 @@ const SPOTS := {
 	"tulip": Vector2(740, 540),
 	"rose": Vector2(520, 880),
 }
-## 종류별 외형: 꽃잎색 / 중심색 / (호환용)꽃잎 수. Tiny Terraces 팔레트.
-const STYLE := {
-	"daisy": {"petal": Palette.CREAM, "center": Palette.YELLOW, "petals": 8},
-	"tulip": {"petal": Palette.ORANGE_L, "center": Palette.ORANGE, "petals": 6},
-	"rose": {"petal": Palette.PURPLE_L, "center": Palette.PURPLE, "petals": 12},
-}
-
 var _flowers := {}
 
+## 종류별 외형: 꽃잎색 / 중심색 / (호환용)꽃잎 수. Tiny Terraces 팔레트.
+## 다른 스크립트 const는 const 초기화에 못 써서 런타임 생성.
+func _style() -> Dictionary:
+	return {
+		"daisy": {"petal": Palette.CREAM, "center": Palette.YELLOW, "petals": 8},
+		"tulip": {"petal": Palette.ORANGE_L, "center": Palette.ORANGE, "petals": 6},
+		"rose": {"petal": Palette.PURPLE_L, "center": Palette.PURPLE, "petals": 12},
+	}
+
 func _ready() -> void:
+	var style := _style()
 	for id in SPOTS:
 		var f = FlowerSprite.new()
 		f.position = SPOTS[id]
-		f.configure(STYLE[id]["petal"], STYLE[id]["center"], STYLE[id]["petals"])
+		f.configure(style[id]["petal"], style[id]["center"], style[id]["petals"])
 		add_child(f)
 		_flowers[id] = f
 	GameManager.upgrade_purchased.connect(_on_upgrade)

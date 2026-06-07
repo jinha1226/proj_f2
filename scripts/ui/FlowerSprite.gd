@@ -11,8 +11,8 @@ const BLOOM_OFFSETS := [
 	Vector2i(2, 3), Vector2i(-4, 1), Vector2i(4, 2), Vector2i(0, -4), Vector2i(-2, -4),
 ]
 
-var petal_color := Palette.CREAM
-var center_color := Palette.YELLOW
+var petal_color: Color = Color(0.87, 0.84, 0.77)  # configure()가 덮어씀
+var center_color: Color = Color(0.83, 0.65, 0.18)
 var petal_count := 8  # (호환용; 미사용)
 var level := 0
 
