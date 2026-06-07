@@ -22,9 +22,12 @@ func _draw() -> void:
 			var x := BED.position.x + i * STEP
 			var y := BED.position.y + j * STEP
 			match (i * 13 + j * 7) % 9:
-				0, 6:
+				0:
 					draw_rect(Rect2(x, y, 14, 14), Palette.DIRT_DARK, true)
-				3:
-					draw_rect(Rect2(x + 4, y, 5, 13), Palette.GREEN_DARK, true)  # 새싹
+				2, 6:  # 풀 새싹(두 톤)
+					draw_rect(Rect2(x + 4, y, 5, 13), Palette.GREEN_DARK, true)
+					draw_rect(Rect2(x + 9, y + 4, 4, 9), Palette.LEAF, true)
+				4:  # 작은 잎 덤불
+					draw_rect(Rect2(x, y + 4, 16, 8), Palette.GREEN_DARK, true)
 				8:
 					draw_rect(Rect2(x + 6, y + 6, 9, 6), Palette.STONE_DARK, true)  # 자갈

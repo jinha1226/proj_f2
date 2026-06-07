@@ -31,5 +31,11 @@ func refresh() -> void:
 		count = GameManager.producer_counts[id]
 		cost = GameManager.producer_cost(id)
 	visible = GameManager.pollen >= data["unlock_at"] or count > 0
-	text = "%s Lv%d   🌸%d" % [data["name"], count, cost]
+	if kind == "flower":
+		if count == 0:
+			text = "🌱 %s 심기      🌸%d" % [data["name"], cost]
+		else:
+			text = "%s 키우기 Lv%d      🌸%d" % [data["name"], count, cost]
+	else:
+		text = "%s 늘리기 (보유 %d)      🌸%d" % [data["name"], count, cost]
 	disabled = GameManager.pollen < cost
