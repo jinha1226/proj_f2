@@ -13,10 +13,10 @@ func setup(p_kind: String, p_id: String) -> void:
 
 func _on_pressed() -> void:
 	if kind == "flower":
-		GameManager.buy_upgrade(id)
+		PlantMode.start(id)   # 심기 모드 진입 → 흙을 탭해 심는다
 	else:
 		GameManager.buy_producer(id)
-	# 구매 후 자기 자신 갱신은 Main이 전체 refresh로 처리
+	# 구매/선택 후 갱신은 Main이 전체 refresh로 처리
 
 func refresh() -> void:
 	var data

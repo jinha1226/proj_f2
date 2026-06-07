@@ -65,3 +65,21 @@ func test_load_returns_false_when_no_file():
 	if FileAccess.file_exists(sm.SAVE_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(sm.SAVE_PATH))
 	assert_false(sm.load_game(gm))
+
+func test_to_dict_includes_placed():
+	gm.placed = [["daisy", 120.0, 240.0], ["rose", 500.0, 800.0]]
+	var d = sm.to_dict(gm, 1000)
+	assert_eq(d["placed"].size(), 2)
+	assert_eq(d["placed"][0], ["daisy", 120.0, 240.0])
+
+func test_apply_dict_restores_placed():
+	var d = {
+		"pollen": 0.0,
+		"flower_levels": {"daisy": 1, "tulip": 0, "rose": 0},
+		"producer_counts": {"bee": 0, "butterfly": 0},
+		"placed": [["daisy", 120.0, 240.0]],
+		"saved_at": 0,
+	}
+	sm.apply_dict(gm, d)
+	assert_eq(gm.placed.size(), 1)
+	assert_eq(gm.placed[0], ["daisy", 120.0, 240.0])

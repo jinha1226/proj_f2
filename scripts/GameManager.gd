@@ -4,10 +4,12 @@ extends Node
 signal pollen_changed(amount: float)
 signal upgrade_purchased(id: String, count: int)
 signal producer_purchased(id: String, count: int)
+signal flower_planted(id: String, pos: Vector2)
 
 var pollen: float = 0.0
-var flower_levels: Dictionary = {}   # id -> 보유 레벨(구매 횟수)
+var flower_levels: Dictionary = {}   # id -> 심은 수
 var producer_counts: Dictionary = {} # id -> 보유 수량
+var placed: Array = []               # 심은 꽃 위치들 [ [id, x, y], ... ] (저장용)
 
 func _ready() -> void:
 	reset_state()
@@ -17,6 +19,7 @@ func reset_state() -> void:
 	pollen = 0.0
 	flower_levels = {}
 	producer_counts = {}
+	placed = []
 	for id in GameData.FLOWERS:
 		flower_levels[id] = 0
 	for id in GameData.PRODUCERS:
@@ -46,6 +49,19 @@ func buy_upgrade(id: String) -> bool:
 	flower_levels[id] += 1
 	pollen_changed.emit(pollen)
 	upgrade_purchased.emit(id, flower_levels[id])
+	return true
+
+## 지정한 위치에 꽃 한 송이 심기. 성공 시 true(비용 차감 + 위치 기록).
+## 잔액 부족이면 false(상태 불변). flower_levels는 buy_upgrade와 동일하게 증가.
+func plant_flower(id: String, pos: Vector2) -> bool:
+	var cost := upgrade_cost(id)
+	if pollen < cost:
+		return false
+	pollen -= cost
+	flower_levels[id] += 1
+	placed.append([id, pos.x, pos.y])
+	pollen_changed.emit(pollen)
+	flower_planted.emit(id, pos)
 	return true
 
 ## 초당 자동 생산량 = 보유한 모든 생산기의 per_sec*수량 합.

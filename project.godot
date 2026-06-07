@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 GameData="*res://scripts/GameData.gd"
 GameManager="*res://scripts/GameManager.gd"
 SaveManager="*res://scripts/SaveManager.gd"
+PlantMode="*res://scripts/PlantMode.gd"
 
 [display]
 

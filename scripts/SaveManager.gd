@@ -10,6 +10,7 @@ func to_dict(gm: Node, saved_at: int) -> Dictionary:
 		"pollen": gm.pollen,
 		"flower_levels": gm.flower_levels.duplicate(),
 		"producer_counts": gm.producer_counts.duplicate(),
+		"placed": gm.placed.duplicate(true),
 		"saved_at": saved_at,
 	}
 
@@ -20,6 +21,9 @@ func apply_dict(gm: Node, d: Dictionary) -> void:
 		gm.flower_levels[id] = int(d.get("flower_levels", {}).get(id, 0))
 	for id in gm.producer_counts:
 		gm.producer_counts[id] = int(d.get("producer_counts", {}).get(id, 0))
+	gm.placed = []
+	for e in d.get("placed", []):
+		gm.placed.append([str(e[0]), float(e[1]), float(e[2])])
 
 var last_saved_at: int = 0
 

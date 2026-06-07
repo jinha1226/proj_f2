@@ -7,6 +7,9 @@ extends Control
 @onready var _offline_popup: Panel = $UI/OfflinePopup
 @onready var _garden: Node2D = $World/GardenField
 @onready var _producers: Node2D = $World/ProducerLayer
+@onready var _plant_banner: Panel = $UI/PlantBanner
+@onready var _plant_label: Label = $UI/PlantBanner/Label
+@onready var _done_btn: Button = $UI/PlantBanner/DoneButton
 
 const AUTOSAVE_INTERVAL := 10.0
 const SHOP_ROW := preload("res://scenes/components/ShopRow.tscn")
@@ -25,8 +28,20 @@ func _ready() -> void:
 	_garden.sync_from_state()
 	_producers.sync_from_state()
 	GameManager.pollen_changed.connect(_on_pollen_changed)
+	PlantMode.changed.connect(_on_plant_mode_changed)
+	_done_btn.pressed.connect(PlantMode.stop)
 	_refresh()
 	_build_shop()
+	_on_plant_mode_changed(PlantMode.active_id)
+
+## 심기 모드 진입/해제 시 배너 토글.
+func _on_plant_mode_changed(active_id: String) -> void:
+	if active_id == "":
+		_plant_banner.hide()
+	else:
+		_plant_label.text = "🌱 %s 심는 중 — 흙을 탭하세요" % GameData.FLOWERS[active_id]["name"]
+		_plant_banner.show()
+	_refresh()
 
 func _build_shop() -> void:
 	for id in GameData.FLOWERS:

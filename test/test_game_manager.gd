@@ -79,3 +79,25 @@ func test_process_no_producers_no_change():
 	gm.pollen = 10.0
 	gm._process(5.0)
 	assert_eq(gm.pollen, 10.0)
+
+func test_plant_flower_rejected_when_poor():
+	gm.pollen = 5.0
+	var ok = gm.plant_flower("daisy", Vector2(100, 200))
+	assert_false(ok)
+	assert_eq(gm.flower_levels["daisy"], 0)
+	assert_eq(gm.placed.size(), 0)
+
+func test_plant_flower_deducts_records_and_counts():
+	gm.pollen = 100.0
+	var ok = gm.plant_flower("daisy", Vector2(120, 240))  # 비용 10
+	assert_true(ok)
+	assert_eq(gm.pollen, 90.0)
+	assert_eq(gm.flower_levels["daisy"], 1)
+	assert_eq(gm.placed.size(), 1)
+	assert_eq(gm.placed[0], ["daisy", 120.0, 240.0])
+
+func test_plant_flower_emits_signal():
+	watch_signals(gm)
+	gm.pollen = 100.0
+	gm.plant_flower("daisy", Vector2(1, 2))
+	assert_signal_emitted(gm, "flower_planted")

@@ -96,8 +96,13 @@ func _screen_to_world(sp: Vector2) -> Vector2:
 	return position + (sp - get_viewport_rect().size * 0.5) / zoom
 
 func _tap(screen_pos: Vector2) -> void:
+	var wp := _screen_to_world(screen_pos)
+	if PlantMode.is_active():
+		# 심기 모드: 탭한 자리에 꽃 심기(잔액 부족이면 무시)
+		GameManager.plant_flower(PlantMode.active_id, wp)
+		return
 	var gained := GameManager.tap_power()
 	GameManager.tap()
 	var ft = FLOATING.instantiate()
 	get_parent().add_child(ft)
-	ft.show_amount(gained, _screen_to_world(screen_pos))
+	ft.show_amount(gained, wp)
