@@ -5,10 +5,10 @@ extends Node2D
 const FlowerSprite := preload("res://scripts/ui/FlowerSprite.gd")
 
 const TYPES := ["daisy", "tulip", "rose"]
-const COLS := 8
-const ROWS := 14
-const AREA := Rect2(170, 230, 1840, 3140)  # 심는 영역(월드 좌표)
-const CLUMP_MAX := 3                        # 각 송이 최대 성숙도(작게 유지)
+const COLS := 12
+const ROWS := 18
+const AREA := Rect2(150, 200, 1880, 3200)  # 심는 영역(월드 좌표)
+const CLUMP_MAX := 6                        # 성숙 시 잎이 옆과 겹쳐 흙을 덮음
 
 var _clumps := {}  # id -> Array[FlowerSprite]  (심을 자리 순서대로)
 
