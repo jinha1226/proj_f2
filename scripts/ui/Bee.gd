@@ -28,12 +28,12 @@ func _process(delta: float) -> void:
 	else:
 		position += to / dist * min(_speed * delta, dist)
 
-## 미니멀 픽셀: 벌 = 노란 블록 한 칸, 나비 = 보라 블록 두 칸.
+## 미니멀 픽셀(탑다운): 벌 = 노란 블록, 나비 = 파란 블록 두 칸(Tiny Terraces 팔레트).
 const SIZE := 8.0  # 블록 한 칸 크기(px)
 
 func _draw() -> void:
 	if kind == "butterfly":
-		draw_rect(Rect2(-SIZE, -SIZE * 0.5, SIZE, SIZE), Color(0.62, 0.42, 1.0), true)
-		draw_rect(Rect2(0, -SIZE * 0.5, SIZE, SIZE), Color(0.78, 0.6, 1.0), true)
+		draw_rect(Rect2(-SIZE, -SIZE * 0.5, SIZE, SIZE), Palette.BLUE, true)
+		draw_rect(Rect2(0, -SIZE * 0.5, SIZE, SIZE), Palette.BLUE.lightened(0.25), true)
 	else:
-		draw_rect(Rect2(-SIZE * 0.5, -SIZE * 0.5, SIZE, SIZE), Color(1, 0.85, 0.15), true)
+		draw_rect(Rect2(-SIZE * 0.5, -SIZE * 0.5, SIZE, SIZE), Palette.BEE, true)

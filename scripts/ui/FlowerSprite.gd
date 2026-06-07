@@ -1,13 +1,19 @@
 extends Node2D
-## 미니멀 픽셀 꽃. 작은 블록(art-pixel) 몇 개로만 그린다.
-## 꽃잎 한 장 = 블록 한 칸. PX 값만 바꾸면 전체 크기가 조절된다.
-## 레벨 0이면 숨김, 레벨이 오르면 줄기가 길고 블록이 살짝 커진다.
+## 탑다운 픽셀덩어리 꽃(Tiny Terraces식). 원점=꽃밭 중심.
+## 초록 잎 패치 위에 작은 꽃송이(꽃잎4+중심) 픽셀이 박힌다.
+## 레벨이 오를수록 패치가 넓어지고 꽃송이 수가 는다.
 
-const PX := 6.0  # art-pixel 한 칸의 화면 크기(px). 작게 = 더 미니멀.
+const PX := 8.0  # art-pixel 한 칸의 화면 크기
 
-var petal_color := Color.WHITE
-var center_color := Color(1, 0.85, 0.2)
-var petal_count := 8  # >=10이면 꽃잎 8장(큰 꽃), 아니면 4장
+## 꽃송이를 흩어놓을 잎 패치 내부 좌표(art-pixel). 레벨이 오르며 앞에서부터 사용.
+const BLOOM_OFFSETS := [
+	Vector2i(0, 0), Vector2i(-3, -2), Vector2i(3, -1), Vector2i(-1, 3),
+	Vector2i(2, 3), Vector2i(-4, 1), Vector2i(4, 2), Vector2i(0, -4), Vector2i(-2, -4),
+]
+
+var petal_color := Palette.CREAM
+var center_color := Palette.YELLOW
+var petal_count := 8  # (호환용; 미사용)
 var level := 0
 
 func configure(p_petal: Color, p_center: Color, p_petals: int) -> void:
@@ -20,7 +26,6 @@ func set_level(l: int) -> void:
 	visible = level > 0
 	queue_redraw()
 
-## art 좌표(ax,ay)에 블록 한 칸. ay가 음수면 위쪽. 원점=줄기 밑동(땅).
 func _blk(ax: int, ay: int, col: Color, s: float) -> void:
 	draw_rect(Rect2(ax * s - s * 0.5, ay * s - s * 0.5, s, s), col, true)
 
@@ -28,19 +33,21 @@ func _draw() -> void:
 	if level <= 0:
 		return
 	var grow: int = min(level, 8)
-	var s: float = PX * (1.0 + grow * 0.16)
-	var stem_col := Color(0.30, 0.55, 0.25)
-	var stem: int = 3 + grow            # 줄기 블록 길이(레벨로 길어짐)
-	for i in range(stem):               # 땅에서 위로 줄기
-		_blk(0, -(i + 1), stem_col, s)
-	var hc: int = -(stem + 1)           # 꽃 중심 art-y
-	# 꽃잎 (다이아몬드 4장, 큰 꽃이면 모서리 4장 추가 = 8장)
-	var petals := [Vector2i(0, -1), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, 1)]
-	if petal_count >= 10:
-		petals.append_array([Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)])
-	for p in petals:
-		_blk(p.x, hc + p.y, petal_color, s)
-	# 꽃 중심 한 칸
-	_blk(0, hc, center_color, s)
-	# 잎사귀 한 칸
-	_blk(1, -int(stem / 2.0), Color(0.34, 0.6, 0.28), s)
+	var s := PX
+	# 잎 패치(원형) — 두 톤 초록으로 결정적 체크
+	var leaf_r: int = 3 + grow / 2
+	for ax in range(-leaf_r, leaf_r + 1):
+		for ay in range(-leaf_r, leaf_r + 1):
+			if ax * ax + ay * ay <= leaf_r * leaf_r:
+				_blk(ax, ay, Palette.GREEN if (ax + ay) % 2 == 0 else Palette.GREEN_DARK, s)
+	# 꽃송이 — 레벨로 개수 증가
+	var blooms: int = min(1 + grow, BLOOM_OFFSETS.size())
+	for i in range(blooms):
+		_draw_bloom(BLOOM_OFFSETS[i].x, BLOOM_OFFSETS[i].y, s)
+
+func _draw_bloom(cx: int, cy: int, s: float) -> void:
+	_blk(cx, cy - 1, petal_color, s)
+	_blk(cx - 1, cy, petal_color, s)
+	_blk(cx + 1, cy, petal_color, s)
+	_blk(cx, cy + 1, petal_color, s)
+	_blk(cx, cy, center_color, s)

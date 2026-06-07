@@ -4,17 +4,17 @@ extends Node2D
 
 const FlowerSprite := preload("res://scripts/ui/FlowerSprite.gd")
 
-## 꽃 밑동 위치(화면 좌표). 들판 하단에 흩어 심는다.
+## 꽃밭 중심 위치(화면 좌표). 탑다운 흙밭 안에 흩어 심는다.
 const SPOTS := {
-	"daisy": Vector2(300, 1080),
-	"tulip": Vector2(780, 1030),
-	"rose": Vector2(540, 1180),
+	"daisy": Vector2(320, 620),
+	"tulip": Vector2(740, 540),
+	"rose": Vector2(520, 880),
 }
-## 종류별 외형: 꽃잎색 / 중심색 / 꽃잎 수.
+## 종류별 외형: 꽃잎색 / 중심색 / (호환용)꽃잎 수. Tiny Terraces 팔레트.
 const STYLE := {
-	"daisy": {"petal": Color(1, 1, 1), "center": Color(1, 0.85, 0.2), "petals": 8},
-	"tulip": {"petal": Color(0.95, 0.45, 0.55), "center": Color(0.85, 0.25, 0.4), "petals": 6},
-	"rose": {"petal": Color(0.85, 0.2, 0.4), "center": Color(0.6, 0.1, 0.25), "petals": 12},
+	"daisy": {"petal": Palette.CREAM, "center": Palette.YELLOW, "petals": 8},
+	"tulip": {"petal": Palette.ORANGE_L, "center": Palette.ORANGE, "petals": 6},
+	"rose": {"petal": Palette.PURPLE_L, "center": Palette.PURPLE, "petals": 12},
 }
 
 var _flowers := {}
