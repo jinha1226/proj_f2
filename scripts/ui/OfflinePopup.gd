@@ -26,7 +26,7 @@ func _close() -> void:
 
 ## 데스크톱(마우스)·모바일(터치) 모두 닫기 지원.
 func _on_input(event: InputEvent) -> void:
-	var pressed := (event is InputEventScreenTouch and event.pressed) \
+	var is_press: bool = (event is InputEventScreenTouch and event.pressed) \
 		or (event is InputEventMouseButton and event.pressed)
-	if pressed:
+	if is_press:
 		_close()

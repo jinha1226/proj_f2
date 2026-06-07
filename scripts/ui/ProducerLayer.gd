@@ -3,7 +3,7 @@ extends Node2D
 ## 저장 로드 후에도 보유 수만큼 보이도록 sync_from_state를 제공한다.
 
 const Bee := preload("res://scripts/ui/Bee.gd")
-const BOUNDS := Rect2(80, 280, 920, 760)  # 벌이 배회하는 들판 영역
+const BOUNDS := Rect2(120, 150, 1920, 3300)  # 벌이 배회하는 들판 영역(큰 월드)
 const MAX_PER_KIND := 8
 
 var _spawned := {"bee": 0, "butterfly": 0}

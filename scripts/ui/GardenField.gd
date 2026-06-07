@@ -4,11 +4,11 @@ extends Node2D
 
 const FlowerSprite := preload("res://scripts/ui/FlowerSprite.gd")
 
-## 꽃 종류별 여러 자리(화면 좌표).
+## 꽃 종류별 여러 자리(월드 좌표, 큰 흙밭 전체에 분산).
 const SPOTS := {
-	"daisy": [Vector2(180, 420), Vector2(340, 560), Vector2(200, 760), Vector2(380, 920), Vector2(150, 1060), Vector2(430, 1140)],
-	"tulip": [Vector2(620, 400), Vector2(840, 520), Vector2(680, 700), Vector2(900, 860), Vector2(640, 1000), Vector2(860, 1120)],
-	"rose": [Vector2(500, 520), Vector2(540, 780), Vector2(300, 650), Vector2(760, 940), Vector2(480, 980), Vector2(720, 620)],
+	"daisy": [Vector2(260, 320), Vector2(460, 720), Vector2(300, 1180), Vector2(520, 1640), Vector2(280, 2200), Vector2(480, 2740), Vector2(360, 3180), Vector2(220, 1900)],
+	"tulip": [Vector2(1640, 360), Vector2(1840, 780), Vector2(1560, 1280), Vector2(1820, 1760), Vector2(1600, 2320), Vector2(1840, 2860), Vector2(1700, 3220), Vector2(1560, 600)],
+	"rose": [Vector2(980, 900), Vector2(1180, 1480), Vector2(1000, 2080), Vector2(1200, 2680), Vector2(960, 460), Vector2(1240, 3160), Vector2(860, 1760), Vector2(1080, 620)],
 }
 
 var _clumps := {}  # id -> Array[FlowerSprite]

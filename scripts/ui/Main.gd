@@ -1,12 +1,12 @@
 extends Control
 ## 메인 씬 컨트롤러. GameManager 시그널 구독 → 라벨 갱신. 자동 저장.
 
-@onready var _pollen_label: Label = $TopBar/PollenLabel
-@onready var _rate_label: Label = $TopBar/RateLabel
-@onready var _shop: VBoxContainer = $ShopPanel
-@onready var _offline_popup: Panel = $OfflinePopup
-@onready var _garden: Node2D = $GardenField
-@onready var _producers: Node2D = $ProducerLayer
+@onready var _pollen_label: Label = $UI/TopBar/PollenLabel
+@onready var _rate_label: Label = $UI/TopBar/RateLabel
+@onready var _shop: VBoxContainer = $UI/ShopPanel
+@onready var _offline_popup: Panel = $UI/OfflinePopup
+@onready var _garden: Node2D = $World/GardenField
+@onready var _producers: Node2D = $World/ProducerLayer
 
 const AUTOSAVE_INTERVAL := 10.0
 const SHOP_ROW := preload("res://scenes/components/ShopRow.tscn")
